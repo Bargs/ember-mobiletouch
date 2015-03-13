@@ -1,5 +1,4 @@
 import Ember from "ember";
-import PreventGhostClicks from "../utils/prevent-ghost-clicks";
 import capitalizeWord from "../utils/capitalize-word";
 import isCustomProtocol from "../utils/is-custom-protocol";
 import isGesture from "../utils/is-gesture";
@@ -126,16 +125,6 @@ export default Ember.EventDispatcher.reopen({
       });
 
     }
-
-    /*
-      Mobile devices trigger a click after a delay
-
-      Mobile Browsers try to pretend that they are normal browsers, so they fire a "click" event
-      a short delay after a "touchEnd". This is great for sites that haven't optimized for mobile,
-      but for sites that do use touchEnd to determine taps/clicks, the extra click event needs to
-      be captured and discarded, otherwise both the touchEnd and the click event will trigger a tap.
-     */
-    PreventGhostClicks.add(element);
 
   },
 
@@ -371,9 +360,6 @@ export default Ember.EventDispatcher.reopen({
     //teardown Hammer
     if (hammer) { hammer.destroy(); }
     this.set('_hammerInstance', null);
-
-    //teardown clickbuster
-    PreventGhostClicks.remove(element);
 
     //run normal destroy
     this._super();
